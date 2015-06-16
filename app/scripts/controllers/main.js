@@ -20,19 +20,24 @@ angular.module('ngFormentryApp')
       encounterProvider:'',
       weight:'50',
       temperature:'37',
-      pulse:''
+      pulse:'',
+      obs:{}
     };
 
-    $scope.conceptIds = [];
+    $scope.child = {};
+    $scope.child=$scope;
+    console.log("Logging Child Scope")
+    console.log($scope);
 
 
     $scope.obsvalue="Hallo World";
-   console.log("log input value: "+$scope);
+   console.log("log input value: ");
     //console.log("pulse:" +  $scope.random);
     $scope.submit = function(){
-      console.log($scope.concept-id);
-      var jsonEncounter = toJson(getEncounter());
+      //console.log($scope.concept-id);
+      //var jsonEncounter = toJson(getEncounter());
       //Obs.encounterSave($scope.formData);
+      console.log($scope.formData);
     };
 
     function getEncounter(){
