@@ -1,23 +1,52 @@
 <div class="jumbotron">
+  <link rel="stylesheet" href="bower_components/select2/select2.css">
+  <link rel="stylesheet" href="bower_components/angular-date-picker/angular-date-picker.css">
+
   <form role="form" name="testForm" class="form-horizontal"  ng-controller="MainCtrl">
 
     <div class="form-group">
-      <label class="control-label col-sm-4" for="email">Patient Information:</label>
+      <label class="control-label col-sm-4" for="patient">Patient Information:</label>
       <div class="col-sm-8">
-        <input type="text" class="form-control" id="email" ng-model="formData.patientuuid">
+        <!--
+        <input id="patient" type="text" placeholder="enter a patient name" ng-model="selected"
+               typeahead="result.display for result in results.results | filter:$viewValue" class="form-control"
+          ng-change="getResults()" ng-model-options="{debounce: 1000}">
+          -->
+        <!--<p>Selected: {{patient.selected}}</p>-->
+        <ui-select ng-model="patient.selected" theme="select2" style="min-width: 400px;">
+          <ui-select-match placeholder="Enter patient name to search..."> {{$select.selected.person.display}} </ui-select-match>
+          <ui-select-choices repeat="patient in results.results"
+                             refresh="getResults($select.search)"
+                             refresh-delay="1000">
+            <!--<span ng-bind-html="patient.person.display | highlight: $select.search"></span>-->
+            <small ng-bind-html="patient.person.display | highlight: $select.search" style="text-align: left"></small>
+          </ui-select-choices>
+        </ui-select>
       </div>
     </div>
 
     <div class="form-group">
-      <label class="control-label col-sm-4" for="encounterDate">Encounter Date:</label>
+      <label class="control-label col-sm-4" for="dt">Encounter Date:</label>
       <div class="col-sm-8">
-        <input type="datetime" class="form-control" id="encounterDate" ng-model="formData.encounterDate">
+        <!--<date-picker id="encounterDate" ng-model="formData.encounterDate"></date-picker>-->
+        <input id="dt" type="date" class="form-control" datepicker-popup ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+
+        <!--<input type="text" class="form-control"  ng-model="dt" />-->
       </div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-4" for="encounterLocation">Encounter Location:</label>
       <div class="col-sm-8">
-        <input type="text" class="form-control" id="encounterLocation" ng-model="formData.encounterLocation">
+        <!--<input type="text" class="form-control" id="encounterLocation" ng-model="formData.encounterLocation">-->
+        <ui-select ng-model="location.selected" theme="select2" style="min-width: 400px;">
+          <ui-select-match placeholder="Enter location name to search..."> {{$select.selected.display}} </ui-select-match>
+          <ui-select-choices repeat="location in locations.results"
+                             refresh="getLocations($select.search)"
+                             refresh-delay="1000">
+            <!--<span ng-bind-html="patient.person.display | highlight: $select.search"></span>-->
+            <span ng-bind-html="location.display | highlight: $select.search" style="text-align: left"></span>
+          </ui-select-choices>
+        </ui-select>
       </div>
     </div>
 
@@ -40,10 +69,10 @@
       </div>
 
       <div class="form-group">
-        <label class="control-label col-sm-4" for="temp">Test Test:</label>
+        <label class="control-label col-sm-4" for="temp">Temperature:</label>
         <div class="col-sm-8">
           <!-- <input type="text" class="form-control" id="weight" ng-model="formData.weight">-->
-          <obs concept-id="1234" obsvalue="formData.obs" id="temp"></obs>
+          <obs concept-id="a8a65fee-1350-11df-a1f1-0026b9348838" obsvalue="formData.obs" id="temp"></obs>
         </div>
       </div>
 
@@ -51,7 +80,7 @@
       <div class="form-group">
         <label class="control-label col-sm-4" for="pulse">Pulse:</label>
         <div class="col-sm-8">
-          <obs concept-id="1234" obsvalue="formData.obs" id="pulse"></obs>
+          <obs concept-id="a8a65f12-1350-11df-a1f1-0026b9348838" obsvalue="formData.obs" id="pulse"></obs>
         </div>
       </div>
     </fieldset>

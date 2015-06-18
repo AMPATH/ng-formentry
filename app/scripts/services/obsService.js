@@ -3,7 +3,7 @@
  */
 angular.module('ngFormentryApp')
   .factory('ObsService',['$resource','$http','$base64',function($resource,$http, Base64){
-    var baseUrl = "https://test1.ampath.or.ke:8443/amrs/ws/rest/v1/";
+    var baseUrl = "https://etl1.ampath.or.ke:8443/amrs/ws/rest/v1/";
     var serviceDefinition = {
 
     };
@@ -29,7 +29,7 @@ angular.module('ngFormentryApp')
       "patient":"8244f7d2-86fe-4138-b42c-6d757aa694ac",
       "encounterDatetime":"2015-06-11T11:28:20Z",
       "obs":obsData
-    }
+    };
 
 
 
@@ -40,14 +40,38 @@ angular.module('ngFormentryApp')
         {uuid: '@uuid'},
         {query: {method: "GET", isArray: false}}
       );
-    }
+    };
 
     serviceDefinition.getEncounterResource = function(){
       return $resource(baseUrl + 'encounter/:uuid',
         {uuid: '@uuid'},
         {query: {method: "GET", isArray: false}}
       );
-    }
+    };
+
+    serviceDefinition.getLocationResource = function(){
+      return $resource(baseUrl + 'location?q=:search',
+        {search: '@search'},
+        {query: {method: "GET", isArray: false}}
+      );
+    };
+
+    serviceDefinition.getLocation = function(){
+      return $resource(baseUrl + 'location/:uuid',
+        {uuid: '@uuid'},
+        {query: {method: "GET", isArray: false}}
+      );
+    };
+
+    serviceDefinition.getPatientResource = function(){
+      return $resource(baseUrl + 'patient?q=:search&v=custom:(uuid,person)',
+        {search: '@search'},
+        {query: {method: "GET", isArray: false}}
+      );
+    };
+
+
+
     serviceDefinition.obsGet = function(obs){
       authdata = Base64.encode('admin' + ':' + 'Admin123');
       $http.defaults.headers.common.Authorization = 'Basic ' + authdata;
@@ -56,7 +80,38 @@ angular.module('ngFormentryApp')
 
         console.log(data);
       });
-    }
+    };
+
+    serviceDefinition.getPatient = function(search){
+      authdata = Base64.encode('admin' + ':' + 'Admin123');
+      $http.defaults.headers.common.Authorization = 'Basic ' + authdata;
+
+      return serviceDefinition.getPatientResource().get({search:search},function(data){
+
+        console.log(data);
+      });
+    };
+
+    serviceDefinition.getLocation = function(search){
+      authdata = Base64.encode('admin' + ':' + 'Admin123');
+      $http.defaults.headers.common.Authorization = 'Basic ' + authdata;
+
+      return serviceDefinition.getLocationResource().get({search:search},function(data){
+
+        console.log(data);
+      });
+    };
+
+    serviceDefinition.getLocationByuuid = function(uuid){
+      authdata = Base64.encode('admin' + ':' + 'Admin123');
+      $http.defaults.headers.common.Authorization = 'Basic ' + authdata;
+
+      return serviceDefinition.getLocation().get({uuid:uuid},function(data){
+
+        console.log(data);
+      });
+    };
+
 
     serviceDefinition.obsSave = function(obs){
       authdata = Base64.encode('admin' + ':' + 'Admin123');
@@ -71,20 +126,20 @@ angular.module('ngFormentryApp')
         });
       }
 
-    };
+    }
 
     serviceDefinition.encounterSave = function(enc){
       authdata = Base64.encode('admin' + ':' + 'Admin123');
       $http.defaults.headers.common.Authorization = 'Basic ' + authdata;
 
 
-        console.log(encData);
-        serviceDefinition.getEncounterResource().save(encData,function(data){
+        console.log(enc);
+        serviceDefinition.getEncounterResource().save(enc,function(data){
 
           console.log(data);
         });
 
 
-    };
+    }
     return serviceDefinition;
   }]);

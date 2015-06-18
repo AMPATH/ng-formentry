@@ -9,7 +9,47 @@
  */
 angular.module('ngFormentryApp')
   .controller('MainCtrl', ['$scope','ObsService', function ($scope, Obs) {
-    console.log($scope);
+    //console.log($scope);
+
+    $scope.locations={};
+    $scope.location={};
+    $scope.selectLocations=[];
+    $scope.testLocations={};
+
+    $scope.getLocations=function(search)
+    {
+      $scope.locations=Obs.getLocation(search);
+
+      for (i in $scope.locations.results)
+      {
+        $scope.testLocations=Obs.getLocationByuuid(i.uuid);
+        $scope.selectLocations.push($scope.testLocations);
+      }
+
+      console.log($scope.selectLocations);
+    };
+
+    function getLocations()
+    {
+     var result=Obs.getLocation();
+      var location;
+
+      console.log("Testing locations");
+      console.log(result.$resolved);
+      if (result.$resolved)
+      {
+        for (i in result.results)
+        {
+          location = Obs.getLocationByuuid(i.uuid);
+          console.log(location);
+          $scope.selectLocations.push(location)
+        }
+      }
+       return $scope.selectLocations;
+    };
+
+    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+    $scope.format = $scope.formats[0];
 
     var obs=this;
     console.log(obs.weight);
@@ -31,44 +71,42 @@ angular.module('ngFormentryApp')
 
 
     $scope.obsvalue="Hallo World";
-   console.log("log input value: ");
+
     //console.log("pulse:" +  $scope.random);
     $scope.submit = function(){
       //console.log($scope.concept-id);
       //var jsonEncounter = toJson(getEncounter());
-      //Obs.encounterSave($scope.formData);
-      console.log($scope.formData);
+      //
+      console.log($scope.patient);
+      console.log("expected rest object: ");
+      console.log(JSON.stringify(getEncounter()));
+      Obs.encounterSave(JSON.stringify(getEncounter()));
     };
 
     function getEncounter(){
       return {
         encounterType:'8d5b2be0-c2cc-11de-8d13-0010c6dffd0f',
-        patient:'8244f7d2-86fe-4138-b42c-6d757aa694ac',
-        encounterDatetime:'2015-06-11T11:28:20Z',
-        obs: getObs()
+        patient:  $scope.patient.selected.uuid,
+        encounterDatetime:$scope.dt,
+        location: $scope.location.selected.uuid,
+        obs: getObs($scope.formData.obs)
       };
     }
 
-    function getObs(){
+    function getObs(obsData){
       var obs = [];
-      obs.push({
-        person:'8244f7d2-86fe-4138-b42c-6d757aa694ac',
-        obsDatetime:'2015-06-11',
-        concept:'a8a65fee-1350-11df-a1f1-0026b9348838',
-        value:$scope.formData.temperature
-      });
-      obs.push({
-        person:'8244f7d2-86fe-4138-b42c-6d757aa694ac',
-        obsDatetime:'2015-06-11',
-        concept:'a8a65f12-1350-11df-a1f1-0026b9348838',
-        value:$scope.formData.pulse
-      });
-      obs.push({
-        person:'8244f7d2-86fe-4138-b42c-6d757aa694ac',
-        obsDatetime:'2015-06-11',
-        concept:$scope.conceptId,
-        value:$scope.formData.weight
-      });
+
+      for (var key in obsData)
+      {
+        obs.push(
+          {
+            concept:key,
+            value:obsData[key].value
+          }
+
+        )
+        console.log(key+":"+obsData[key].value);
+      }
       return obs;
     }
     function toJson(data){
@@ -77,5 +115,81 @@ angular.module('ngFormentryApp')
       console.log(converted);
       return converted;
     }
+
+    $scope.selected={};
+    $scope.patient={};
+
+    $scope.results={};
+    $scope.getResults=function(searchText)
+    {
+      $scope.results=Obs.getPatient(searchText);
+      //return data.results;
+    }
+    ///Date picker Methods
+    $scope.today = function() {
+      $scope.dt = new Date();
+    };
+    $scope.today();
+
+    $scope.clear = function () {
+      $scope.dt = null;
+    };
+
+    // Disable weekend selection
+    $scope.disabled = function(date, mode) {
+      return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+    };
+
+    $scope.toggleMin = function() {
+      $scope.minDate = $scope.minDate ? null : new Date();
+    };
+    $scope.toggleMin();
+
+    $scope.open = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+
+      $scope.opened = true;
+    };
+
+    $scope.dateOptions = {
+      formatYear: 'yy',
+      startingDay: 1
+    };
+
+    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+    $scope.format = $scope.formats[0];
+
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    var afterTomorrow = new Date();
+    afterTomorrow.setDate(tomorrow.getDate() + 2);
+    $scope.events =
+      [
+        {
+          date: tomorrow,
+          status: 'full'
+        },
+        {
+          date: afterTomorrow,
+          status: 'partially'
+        }
+      ];
+
+    $scope.getDayClass = function(date, mode) {
+      if (mode === 'day') {
+        var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+        for (var i=0;i<$scope.events.length;i++){
+          var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+          if (dayToCheck === currentDay) {
+            return $scope.events[i].status;
+          }
+        }
+      }
+
+      return '';
+    };
 
   }]);
