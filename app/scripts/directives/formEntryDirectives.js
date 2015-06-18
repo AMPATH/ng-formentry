@@ -14,7 +14,7 @@ angular.module('ngFormentryApp')
   .directive('obs',function(){
     return{
       restrict:'E',
-      template:'<div><input type="text" class="form-control" ng-model="obsvalue[conceptId].value"> {{obsvalue[conceptId]}}<div>',
+      template:'<div><input type="text" class="form-control" ng-model="obsvalue[conceptId].value"> <!--{{obsvalue[conceptId]}}--><div>',
       scope:{
         conceptId: '@',
         labelText: '@',
@@ -46,5 +46,4 @@ angular.module('ngFormentryApp')
       trunsclude:true,
       template:'<div ng-transclude=""></div>'
     }
-  })
-;
+  });
