@@ -10,67 +10,58 @@
 angular.module('ngFormentryApp')
   .controller('MainCtrl', ['$scope','ObsService', function ($scope, Obs) {
     //console.log($scope);
+  /*
+  Testing how to using radio buttons
+   */
 
-    $scope.locations={};
-    $scope.location={};
-    $scope.selectLocations=[];
-    $scope.testLocations={};
+    /*
+    Always initialize the binding object to allow for two-way binding
+     Initializing the binding object for the radio buttons
+     */
 
+    $scope.data={selectedItem:{}};
+
+    /*
+    Test function to see what is selected when the user selects/clicks a given radio button
+     */
+    $scope.test=function(){
+      console.log("parent Scope Val: ");
+      //console.log( $scope.data.selectedItem);
+
+      for (var key in $scope.data.selectedItem)
+      {
+        /*
+        When logging this object I noticed that one the properties was being lost (concepId) for the subsquent objects
+        Even though it works fine to my expectation am not very sure if these code my crumble
+         */
+        console.log('Concept Question Key: '+key);
+        console.log('Selected Concept Answer Key: '+$scope.data.selectedItem[key].value);
+      }
+    }
+
+    /*
+    Autocomplete fields for locations
+    Initializing the scope
+     */
+    $scope.locations={};//list of locations
+    $scope.location={};//selected location
     $scope.getLocations=function(search)
     {
       $scope.locations=Obs.getLocation(search);
 
-      for (i in $scope.locations.results)
-      {
-        $scope.testLocations=Obs.getLocationByuuid(i.uuid);
-        $scope.selectLocations.push($scope.testLocations);
-      }
-
-      console.log($scope.selectLocations);
     };
 
-    function getLocations()
-    {
-     var result=Obs.getLocation();
-      var location;
 
-      console.log("Testing locations");
-      console.log(result.$resolved);
-      if (result.$resolved)
-      {
-        for (i in result.results)
-        {
-          location = Obs.getLocationByuuid(i.uuid);
-          console.log(location);
-          $scope.selectLocations.push(location)
-        }
-      }
-       return $scope.selectLocations;
-    };
-
-    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    $scope.format = $scope.formats[0];
-
-    var obs=this;
-    console.log(obs.weight);
     $scope.formData={
       patientuuid:'',
       encounterDate:'',
       encounterLocation:'',
       encounterProvider:'',
-      weight:'50',
-      temperature:'37',
+      weight:'',
+      temperature:'',
       pulse:'',
       obs:{}
     };
-
-    $scope.child = {};
-    $scope.child=$scope;
-    console.log("Logging Child Scope")
-    console.log($scope);
-
-
-    $scope.obsvalue="Hallo World";
 
     //console.log("pulse:" +  $scope.random);
     $scope.submit = function(){
@@ -83,6 +74,9 @@ angular.module('ngFormentryApp')
       Obs.encounterSave(JSON.stringify(getEncounter()));
     };
 
+    /*
+    This method is being used to build JSON object for the encounter that can be passed for posting
+     */
     function getEncounter(){
       return {
         encounterType:'8d5b2be0-c2cc-11de-8d13-0010c6dffd0f',
@@ -93,6 +87,9 @@ angular.module('ngFormentryApp')
       };
     }
 
+    /*
+    Function to get all the obs on the form and generate a JSON with obs array
+     */
     function getObs(obsData){
       var obs = [];
 
@@ -107,6 +104,20 @@ angular.module('ngFormentryApp')
         )
         console.log(key+":"+obsData[key].value);
       }
+
+      /*
+      Obs from Test radio buttons
+       */
+
+      for (var key in $scope.data.selectedItem)
+      {
+        obs.push(
+          {
+            concept:key,
+            value:$scope.data.selectedItem[key].value
+          }
+        )
+      }
       return obs;
     }
     function toJson(data){
@@ -116,16 +127,19 @@ angular.module('ngFormentryApp')
       return converted;
     }
 
-    $scope.selected={};
-    $scope.patient={};
+    $scope.patient={}; //selected patient
 
-    $scope.results={};
+    $scope.patients={};
     $scope.getResults=function(searchText)
     {
-      $scope.results=Obs.getPatient(searchText);
+      $scope.patients=Obs.getPatient(searchText);
       //return data.results;
     }
-    ///Date picker Methods
+
+
+    /*
+    Date picker Methods
+     */
     $scope.today = function() {
       $scope.dt = new Date();
     };

@@ -15,7 +15,7 @@
         <!--<p>Selected: {{patient.selected}}</p>-->
         <ui-select ng-model="patient.selected" theme="select2" style="min-width: 400px;">
           <ui-select-match placeholder="Enter patient name to search..."> {{$select.selected.person.display}} </ui-select-match>
-          <ui-select-choices repeat="patient in results.results"
+          <ui-select-choices repeat="patient in patients.results"
                              refresh="getResults($select.search)"
                              refresh-delay="1000">
             <!--<span ng-bind-html="patient.person.display | highlight: $select.search"></span>-->
@@ -82,6 +82,31 @@
         <div class="col-sm-8">
           <obs concept-id="a8a65f12-1350-11df-a1f1-0026b9348838" obsvalue="formData.obs" id="pulse"></obs>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-4" for="pulse">Marital Status:</label>
+
+        <div class="col-sm-8">
+          <!--for now am using the single quotation marks for each concept answer id bcoz angular fails to compile if I leave out the quotes-->
+            <obs-radio concept-id="a899a9f2-1350-11df-a1f1-0026b9348838" concept-answer-id="'a8aa76b0-1350-11df-a1f1-0026b9348838','a899ae34-1350-11df-a1f1-0026b9348838','a8b03712-1350-11df-a1f1-0026b9348838'" answer-labels="Married,Widowed,Polygamous" obsvalue="data.selectedItem" ng-click="test()"></obs-radio>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-4" for="pulse">ART Plan:</label>
+
+        <div class="col-sm-8">
+
+          <obs-radio concept-id="a89b75d4-1350-11df-a1f1-0026b9348838" concept-answer-id="'a89b77aa-1350-11df-a1f1-0026b9348838','a89b7c50-1350-11df-a1f1-0026b9348838'" answer-labels="Start Drugs,Change Regimen" obsvalue="data.selectedItem" ng-click="test()"></obs-radio>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4" for="pulse">HIV STATUS:</label>
+
+          <div class="col-sm-8">
+
+            <obs-radio concept-id="9e4d6436-4040-46a3-a0ae-6dbc0acfe593" concept-answer-id="'a896f3a6-1350-11df-a1f1-0026b9348838','a896d2cc-1350-11df-a1f1-0026b9348838','a899b50a-1350-11df-a1f1-0026b9348838'" answer-labels="Positive,Negative,Unknown" obsvalue="data.selectedItem" ng-click="test()"></obs-radio>
+          </div>
       </div>
     </fieldset>
     <div class="form-group">
