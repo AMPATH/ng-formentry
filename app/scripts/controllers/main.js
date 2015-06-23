@@ -60,9 +60,9 @@ angular.module('ngFormentryApp')
       weight:'',
       temperature:'',
       pulse:'',
-      obs:{}
+      obs:{length:0}
     };
-
+//obs.length !== 0
     //console.log("pulse:" +  $scope.random);
     $scope.submit = function(){
       //console.log($scope.concept-id);
@@ -95,13 +95,14 @@ angular.module('ngFormentryApp')
 
       for (var key in obsData)
       {
+        if(key !=='length')
         obs.push(
           {
-            concept:key,
+            concept:obsData[key].conceptId,
             value:obsData[key].value
           }
 
-        )
+        );
         console.log(key+":"+obsData[key].value);
       }
 
