@@ -38,13 +38,18 @@
       <label class="control-label col-sm-4" for="encounterLocation">Encounter Location:</label>
       <div class="col-sm-8">
         <!--<input type="text" class="form-control" id="encounterLocation" ng-model="formData.encounterLocation">-->
-        <ui-select ng-model="location.selected" theme="select2" style="min-width: 400px;">
-          <ui-select-match placeholder="Enter location name to search..."> {{$select.selected.display}} </ui-select-match>
+        <ui-select ng-model="location.selected" theme="select2" style="min-width: 400px; min-height:30px ">
+          <ui-select-match placeholder="Enter location name to search..."> {{$select.selected.name}} </ui-select-match>
           <ui-select-choices repeat="location in locations.results"
                              refresh="getLocations($select.search)"
                              refresh-delay="1000">
             <!--<span ng-bind-html="patient.person.display | highlight: $select.search"></span>-->
-            <span ng-bind-html="location.display | highlight: $select.search" style="text-align: left"></span>
+            <div style="text-align: left;">
+              <span ng-bind-html="location.name | highlight: $select.search" style="text-align: left"></span>-
+              <small ng-bind-html="location.description | highlight: $select.search" style="text-align: left"></small>
+
+            </div>
+
           </ui-select-choices>
         </ui-select>
       </div>
@@ -99,6 +104,7 @@
 
           <obs-radio concept-id="a89b75d4-1350-11df-a1f1-0026b9348838" concept-answer-id="'a89b77aa-1350-11df-a1f1-0026b9348838','a89b7c50-1350-11df-a1f1-0026b9348838'" answer-labels="Start Drugs,Change Regimen" obsvalue="formData.obs" ng-click="test()"></obs-radio>
         </div>
+      </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4" for="pulse">HIV STATUS:</label>
@@ -108,6 +114,7 @@
             <obs-radio concept-id="9e4d6436-4040-46a3-a0ae-6dbc0acfe593" concept-answer-id="'a896f3a6-1350-11df-a1f1-0026b9348838','a896d2cc-1350-11df-a1f1-0026b9348838','a899b50a-1350-11df-a1f1-0026b9348838'" answer-labels="Positive,Negative,Unknown" obsvalue="formData.obs" ng-click="test()"></obs-radio>
           </div>
       </div>
+
     </fieldset>
     <div class="form-group">
       <div class="col-sm-offset-9 col-sm-3">
