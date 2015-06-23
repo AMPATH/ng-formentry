@@ -50,7 +50,7 @@ angular.module('ngFormentryApp')
     };
 
     serviceDefinition.getLocationResource = function(){
-      return $resource(baseUrl + 'location?q=:search',
+      return $resource(baseUrl + 'location?q=:search&v=custom:(uuid,description,name)',
         {search: '@search'},
         {query: {method: "GET", isArray: false}}
       );

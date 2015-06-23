@@ -1,0 +1,7 @@
+<div>
+  <input  class="form-control" ng-model="model" ng-model-options="{debounce: 1000}" typeahead="result for result in results | filter:$viewValue | limitTo:8">
+  <ul>
+    <li ng-repeat="result in results">{{result}}</li>
+  </ul>
+</div>
+typeahead="state for state in states | filter:$viewValue | limitTo:8"
