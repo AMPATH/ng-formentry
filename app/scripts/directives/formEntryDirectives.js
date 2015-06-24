@@ -45,10 +45,10 @@ angular.module('ngFormentryApp')
         value: ''
       };
 
-      
+
       //Creating the key/value object
       scope.obsvalue[scope.index] = obs;
-      
+
       scope.obsvalue.length++;
 
 
@@ -66,7 +66,6 @@ angular.module('ngFormentryApp')
           //Creating a key/value pair of labels
           //The uuid will be treated as the key and associated label will be the value
           scope.testLabels[scope.conceptAnswers[i]] = scope.conceptTestLabels[i];
-
         }
         console.log(scope.testLabels["123"]);
 
@@ -77,7 +76,6 @@ angular.module('ngFormentryApp')
     }
   }
 })
-
   .directive('obs', function () {
   return {
     restrict: 'E',
@@ -86,6 +84,7 @@ angular.module('ngFormentryApp')
       conceptId: '@',
       labelText: '@',
       obsvalue: '='
+
 
     },
 
@@ -97,20 +96,20 @@ angular.module('ngFormentryApp')
         conceptId: scope.conceptId,
         value: '20'// this should be changed to blank in production
       }
-      
+
       scope.index =scope.obsvalue.length;
-      
+
       scope.obsvalue[scope.index] = obs;
-      
+
       scope.obsvalue.length++;
-      
+
 
       //creating a dictionary with a key/value pair
       // where the key is the conceptId and
       // the value is the obj having conceptId and the value entered by the user
-     
 
-      
+
+
     }
   }
 })

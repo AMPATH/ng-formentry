@@ -10,16 +10,29 @@
 angular.module('ngFormentryApp')
   .controller('MainCtrl', ['$scope','ObsService','PayloadFactory', function ($scope, Obs, payloadFactory) {
     //console.log($scope);
-  /*
-  Testing how to using radio buttons
-   */
+
+
 
     /*
     Always initialize the binding object to allow for two-way binding
      Initializing the binding object for the radio buttons
      */
 
-    $scope.data={selectedItem:{}};
+    $scope.data={selectedItem:{},
+      test:{}};
+
+
+    /*
+     Testing how to using checkboxes buttons
+     */
+
+    $scope.testCheckbox=function()
+    {
+      console.log( $scope.data.test);
+    }
+    /*
+     Testing how to using radio buttons
+     */
 
     /*
     Test function to see what is selected when the user selects/clicks a given radio button
