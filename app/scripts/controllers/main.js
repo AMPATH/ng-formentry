@@ -8,7 +8,7 @@
  * Controller of the ngFormentryApp
  */
 angular.module('ngFormentryApp')
-  .controller('MainCtrl', ['$scope','ObsService', function ($scope, Obs) {
+  .controller('MainCtrl', ['$scope','ObsService','PayloadFactory', function ($scope, Obs, payloadFactory) {
     //console.log($scope);
 
 
@@ -73,72 +73,25 @@ angular.module('ngFormentryApp')
       weight:'',
       temperature:'',
       pulse:'',
-      obs:{}
+      obs:{length:0}
     };
-
+//obs.length !== 0
     //console.log("pulse:" +  $scope.random);
     $scope.submit = function(){
       //console.log($scope.concept-id);
       //var jsonEncounter = toJson(getEncounter());
       //
-      console.log($scope.patient);
-      console.log("expected rest object: ");
-      console.log(JSON.stringify(getEncounter()));
-      Obs.encounterSave(JSON.stringify(getEncounter()));
+      var payload =JSON.stringify(
+          new payloadFactory.Encounter(
+            '8d5b2be0-c2cc-11de-8d13-0010c6dffd0f',
+            $scope.patient.selected.uuid,
+            $scope.dt,
+            $scope.location.selected.uuid,
+            payloadFactory.ObsArray($scope.formData.obs,'conceptId','value')
+          ));
+      
+      Obs.encounterSave(payload);
     };
-
-    /*
-    This method is being used to build JSON object for the encounter that can be passed for posting
-     */
-    function getEncounter(){
-      return {
-        encounterType:'8d5b2be0-c2cc-11de-8d13-0010c6dffd0f',
-        patient:  $scope.patient.selected.uuid,
-        encounterDatetime:$scope.dt,
-        location: $scope.location.selected.uuid,
-        obs: getObs($scope.formData.obs)
-      };
-    }
-
-    /*
-    Function to get all the obs on the form and generate a JSON with obs array
-     */
-    function getObs(obsData){
-      var obs = [];
-
-      for (var key in obsData)
-      {
-        obs.push(
-          {
-            concept:key,
-            value:obsData[key].value
-          }
-
-        )
-        console.log(key+":"+obsData[key].value);
-      }
-
-      /*
-      Obs from Test radio buttons
-       */
-
-      for (var key in $scope.data.selectedItem)
-      {
-        obs.push(
-          {
-            concept:key,
-            value:$scope.data.selectedItem[key].value
-          }
-        )
-      }
-      return obs;
-    }
-    function toJson(data){
-      console.log(data);
-      var converted = angular.toJson(data);
-      console.log(converted);
-      return converted;
-    }
 
     $scope.patient={}; //selected patient
 
