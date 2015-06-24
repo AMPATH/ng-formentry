@@ -114,7 +114,22 @@
             <obs-radio concept-id="9e4d6436-4040-46a3-a0ae-6dbc0acfe593" concept-answer-id="'a896f3a6-1350-11df-a1f1-0026b9348838','a896d2cc-1350-11df-a1f1-0026b9348838','a899b50a-1350-11df-a1f1-0026b9348838'" answer-labels="Positive,Negative,Unknown" obsvalue="data.selectedItem" ng-click="test()"></obs-radio>
           </div>
       </div>
+      <div class="form-group">
+        <label class="control-label col-sm-4" for="test">TEST CHECKBOX:</label>
 
+        <div class="col-sm-8">
+
+          <obs-checkbox concept-id="a89b75d4-1350-11df-a1f1-0026b9348838" concept-answer-id="'a896f3a6-1350-11df-a1f1-0026b9348838'" answer-label="Positive" obsvalue="data.test" ng-click="testCheckbox()"></obs-checkbox>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-4" for="test2">TEST2 CHECKBOX:</label>
+
+        <div class="col-sm-8">
+
+          <obs-checkbox concept-id="9e4d6436-4040-46a3-a0ae-6dbc0acfe593" concept-answer-id="'a89b77aa-1350-11df-a1f1-0026b9348838'" answer-label="Negative" obsvalue="data.test" ng-click="testCheckbox()"></obs-checkbox>
+        </div>
+      </div>
     </fieldset>
     <div class="form-group">
       <div class="col-sm-offset-9 col-sm-3">
