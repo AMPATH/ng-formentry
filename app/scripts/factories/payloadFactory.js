@@ -10,6 +10,7 @@ angular.module('ngFormentryApp')
 		  this.value = value;
   };
 
+  //pass an object that contains members which are obs.
   factoryDefinition.ObsArray = function (objectArray, conceptUuidMember, valueMember, commaDelimitedIndexesToExclude) {
 		var obsArray = [];
 
